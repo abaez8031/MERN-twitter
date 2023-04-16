@@ -7,6 +7,19 @@ const passport = require('passport');
 const { loginUser, restoreUser } = require('../../config/passport');
 const { isProduction } = require('../../config/keys');
 
+router.get('/current', restoreUser, (req, res) => {
+  if (!isProduction) {
+    const csrfToken = req.csrfToken();
+    res.cookie("CSRF-TOKEN", csrfToken);
+  }
+  if (!req.user) return res.json(null);
+  res.json({
+    _id: req.user._id,
+    username: req.user.username,
+    email: req.user.email
+  });
+});
+
 router.get('/', function(req, res, next) {
   res.json({
     message: "GET /api/users"
@@ -66,17 +79,5 @@ router.post('/login', async (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/current', restoreUser, (req, res) => {
-  if (!isProduction) {
-    const csrfToken = req.csrfToken();
-    res.cookie("CSRF-TOKEN", csrfToken);
-  }
-  if (!req.user) return res.json(null);
-  res.json({
-    _id: req.user._id,
-    username: req.user.username,
-    email: req.user.email
-  });
-});
 
 module.exports = router;
