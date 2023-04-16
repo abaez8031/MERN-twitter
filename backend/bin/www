@@ -5,6 +5,7 @@
  */
 const mongoose = require('mongoose');
 const { mongoURI: db } = require('../config/keys.js');
+
 mongoose
 .connect(db, { useNewUrlParser: true })
 .then(() => {
