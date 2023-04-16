@@ -11,7 +11,7 @@ mongoose
   debug("Connected to MongoDB successfully");
   server.listen(port);
 })
-.catch(err => serverLogger(err));
+.catch(err => debug(err));
 
 var app = require('../app');
 var debug = require('debug')('backend:server');
